@@ -10,4 +10,5 @@ urlpatterns = [
     path('upload/', views.upload_file, name='upload_file'),
     path('download_files/', views.download_files, name='download_files'),
     path('logout/', views.logout_user, name='logout'),
+    path('delete/<int:id>/', views.delete_file, name='delete_file'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

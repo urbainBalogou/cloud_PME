@@ -1,14 +1,14 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.utils.timezone import now
 
 from .models import *
 from collections import defaultdict
 import io
 import zipfile
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotAllowed
 from django.utils import timezone
 
 user = get_user_model()
@@ -102,3 +102,11 @@ def download_files(request):
 def logout_user(request):
     logout(request)
     return redirect('connexion')
+
+def delete_file(request, id):
+    if request.method == "POST":
+        fichier = get_object_or_404(FichierDepartement, id=id)
+        fichier.delete()
+        messages.success(request, "Fichier supprimé avec succès.")
+        return redirect("index")
+    return HttpResponseNotAllowed(["POST"])
