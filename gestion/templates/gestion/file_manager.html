@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load fichier_extras %}
 {% block content %}
 {% if messages %}
 <div id="message-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
@@ -65,7 +66,7 @@
             <div class="col-span-12">
                 <div class="mt-4 flex flex-col gap-y-3 md:mt-0 md:h-10 md:flex-row md:items-center">
                     <div class="text-base font-medium group-[.mode--light]:text-white">
-                        File Manager
+                        Gestionnaire de Fichiers
                     </div>
                     <div class="flex flex-col gap-x-3 gap-y-2 sm:flex-row md:ml-auto">
                         <!-- Input caché -->
@@ -92,19 +93,19 @@
                     </div>
                 </div>
                 <form action="{% url 'download_files' %}" method="post">
-                <div class="mt-3.5 flex flex-col gap-5 sm:flex-row">
-                    <div class="relative">
-                    </div>
-                    <div class="box box--stacked flex w-full flex-col">
-                        <div class="mb-1 flex flex-col gap-y-2 p-5 sm:flex-row sm:items-center">
-                            <div>
-                                <div class="relative">
-                                    <i data-tw-merge="" data-lucide="search"
-                                       class="absolute inset-y-0 left-0 z-10 my-auto ml-3 h-4 w-4 stroke-[1.3] text-slate-500"></i>
-                                    <input data-tw-merge="" type="text" placeholder="Chercher des fichiers..."
-                                           class="disabled:bg-slate-100 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent [&[readonly]]:bg-slate-100 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent transition duration-200 ease-in-out w-full text-sm border-slate-200 shadow-sm placeholder:text-slate-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-slate-700 dark:focus:ring-opacity-50 dark:placeholder:text-slate-500/80 [&[type='file']]:border file:mr-4 file:py-2 file:px-4 file:rounded-l-md file:border-0 file:border-r-[1px] file:border-slate-100/10 file:text-sm file:font-semibold file:bg-slate-100 file:text-slate-500/70 hover:file:bg-200 group-[.form-inline]:flex-1 group-[.input-group]:rounded-none group-[.input-group]:[&:not(:first-child)]:border-l-transparent group-[.input-group]:first:rounded-l group-[.input-group]:last:rounded-r group-[.input-group]:z-10 rounded-[0.5rem] pl-9 sm:w-64">
+                    <div class="mt-3.5 flex flex-col gap-5 sm:flex-row">
+                        <div class="relative">
+                        </div>
+                        <div class="box box--stacked flex w-full flex-col">
+                            <div class="mb-1 flex flex-col gap-y-2 p-5 sm:flex-row sm:items-center">
+                                <div>
+                                    <div class="relative">
+                                        <i data-tw-merge="" data-lucide="search"
+                                           class="absolute inset-y-0 left-0 z-10 my-auto ml-3 h-4 w-4 stroke-[1.3] text-slate-500"></i>
+                                        <input data-tw-merge="" type="text" placeholder="Chercher des fichiers..."
+                                               class="disabled:bg-slate-100 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent [&[readonly]]:bg-slate-100 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent transition duration-200 ease-in-out w-full text-sm border-slate-200 shadow-sm placeholder:text-slate-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-slate-700 dark:focus:ring-opacity-50 dark:placeholder:text-slate-500/80 [&[type='file']]:border file:mr-4 file:py-2 file:px-4 file:rounded-l-md file:border-0 file:border-r-[1px] file:border-slate-100/10 file:text-sm file:font-semibold file:bg-slate-100 file:text-slate-500/70 hover:file:bg-200 group-[.form-inline]:flex-1 group-[.input-group]:rounded-none group-[.input-group]:[&:not(:first-child)]:border-l-transparent group-[.input-group]:first:rounded-l group-[.input-group]:last:rounded-r group-[.input-group]:z-10 rounded-[0.5rem] pl-9 sm:w-64">
+                                    </div>
                                 </div>
-                            </div>
 
                                 <div class="flex flex-col gap-x-3 gap-y-2 sm:ml-auto sm:flex-row">
 
@@ -130,97 +131,112 @@
                                     </div>
 
                                 </div>
-                        </div>
+                            </div>
 
 
-                        <div>
-                            {% for date, fichiers in fichiers_groupes.items %}
-                            <!-- Section par date -->
-                            <div class="mb-10">
-                                <!-- Titre avec la date -->
-                                <div class="relative mb-5 mt-1 h-4 text-xs uppercase text-slate-500/60 before:absolute before:inset-y-0 before:my-auto before:h-px before:w-full before:bg-slate-200/70 before:content-['']">
+                            <div>
+                                {% for date, fichiers in fichiers_groupes.items %}
+                                <!-- Section par date -->
+                                <div class="mb-10">
+                                    <!-- Titre avec la date -->
+                                    <div class="relative mb-5 mt-1 h-4 text-xs uppercase text-slate-500/60 before:absolute before:inset-y-0 before:my-auto before:h-px before:w-full before:bg-slate-200/70 before:content-['']">
                                 <span class="absolute ml-4 flex items-center bg-white px-2.5">
-                                <i data-lucide="pin" class="mr-1.5 h-[15px] w-[15px] stroke-slate-400/70 stroke-[1.7]"></i>
+                                <i data-lucide="pin"
+                                   class="mr-1.5 h-[15px] w-[15px] stroke-slate-400/70 stroke-[1.7]"></i>
                                     {{ date }}
                                 </span>
-                                </div>
+                                    </div>
 
-                                <!-- Fichiers du jour -->
-                                <div class="grid grid-cols-12 gap-3 sm:gap-3.5">
-                                    {% for fichier in fichiers %}
-                                    <div class="col-span-6 sm:col-span-4 md:col-span-3 xl:col-span-2">
-                                        <div class="relative cursor-pointer rounded-[0.6rem] border border-slate-200/80 px-3 pb-5 pt-8 shadow-sm transition hover:bg-slate-50 sm:px-5">
+                                    <!-- Fichiers du jour -->
+                                    <div class="grid grid-cols-12 gap-3 sm:gap-3.5">
+                                        {% for fichier in fichiers %}
+                                        <div class="col-span-6 sm:col-span-4 md:col-span-3 xl:col-span-2">
+                                            <div class="relative cursor-pointer rounded-[0.6rem] border border-slate-200/80 px-3 pb-5 pt-8 shadow-sm transition hover:bg-slate-50 sm:px-5">
 
-                                            <!-- Case à cocher -->
-                                            <div class="absolute left-0 top-0 ml-3 mt-3">
-                                                <input type="checkbox" name="fichiers_selectionnes" value="{{ fichier.id }}"
-                                                       {% if fichier.selectionne %}checked{% endif %}
-                                                       class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-slate-700 dark:focus:ring-opacity-50 border">
-                                            </div>
-
-                                            <!-- Icône PDF -->
-                                            <div class="mx-auto w-2/4 text-xs">
-                                                <div class="relative block bg-center bg-no-repeat bg-contain before:content-[''] before:pt-[100%] before:w-full before:block bg-file-icon-file">
-                                                    <div class="absolute bottom-0 left-0 right-0 top-0 m-auto flex items-center justify-center text-white">
-                                                        PDF
-                                                    </div>
+                                                <!-- Case à cocher -->
+                                                <div class="absolute left-0 top-0 ml-3 mt-3">
+                                                    <input type="checkbox" name="fichiers_selectionnes"
+                                                           value="{{ fichier.id }}"
+                                                           {% if fichier.selectionne %}checked{% endif %}
+                                                           class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-slate-700 dark:focus:ring-opacity-50 border">
                                                 </div>
-                                            </div>
 
-                                            <!-- Nom du fichier -->
-                                            <a class="mt-4 block truncate text-center font-medium capitalize"
-                                               href="{{ fichier.fichier.url }}" title="Voir ou télécharger le fichier">
-                                                {{ fichier.nom_fichier }}
-                                            </a>
+                                                <!-- Icône PDF -->
+                                                <div class="flex items-center space-x-2">
+                                                    {% with fichier.nom_fichier|extension as ext %}
+                                                    {% if ext == ".pdf" %}
+                                                    <i data-lucide="file-text" class="text-red-600 w-5 h-5"></i> PDF
+                                                    {% elif ext == ".doc" or ext == ".docx" %}
+                                                    <i data-lucide="file-text" class="text-blue-600 w-5 h-5"></i> Word
+                                                    {% elif ext == ".xls" or ext == ".xlsx" %}
+                                                    <i data-lucide="file-spreadsheet"
+                                                       class="text-green-600 w-5 h-5"></i> Excel
+                                                    {% elif ext == ".txt" %}
+                                                    <i data-lucide="file" class="text-gray-600 w-5 h-5"></i> Texte
+                                                    {% else %}
+                                                    <i data-lucide="file" class="text-slate-400 w-5 h-5"></i> Fichier
+                                                    {% endif %}
+                                                    {% endwith %}
+                                                    <!--span class="text-sm">{{ fichier.nom_fichier }}</span-->
+                                                </div>
 
-                                            <!-- Taille du fichier -->
-                                            <div class="mt-1 text-center text-xs text-slate-500">
-                                                {{ fichier.fichier.size|filesizeformat }}
-                                            </div>
-                                            <div class="mt-1 text-center text-xs text-slate-500">
-                                                uploadé par <em>{{ fichier.ajoute_par.user }}</em>
-                                            </div>
 
-                                            <!-- Menu dropdown -->
-                                            <div class="dropdown absolute right-0 top-0 ml-auto mr-2 mt-3">
-                                                <a data-tw-toggle="dropdown" aria-expanded="false" href="javascript:;"
-                                                   class="cursor-pointer block h-5 w-5" aria-label="Plus d'options">
-                                                    <i data-lucide="more-vertical"
-                                                       class="stroke-[1] w-5 h-5 fill-slate-400/70 stroke-slate-400/70"></i>
+                                                <!-- Nom du fichier -->
+                                                <a class="mt-4 block truncate text-center font-medium capitalize"
+                                                   href="{{ fichier.fichier.url }}"
+                                                   title="Voir ou télécharger le fichier">
+                                                    {{ fichier.nom_fichier }}
                                                 </a>
-                                                <div class="dropdown-menu absolute z-[9999] hidden"
-                                                     data-transition="" data-selector=".show"
-                                                     data-enter="transition-all ease-linear duration-150"
-                                                     data-enter-from="absolute !mt-5 invisible opacity-0 translate-y-1"
-                                                     data-enter-to="!mt-1 visible opacity-100 translate-y-0"
-                                                     data-leave="transition-all ease-linear duration-150"
-                                                     data-leave-from="!mt-1 visible opacity-100 translate-y-0"
-                                                     data-leave-to="absolute !mt-5 invisible opacity-0 translate-y-1">
-                                                    <div class="dropdown-content rounded-md border-transparent bg-white p-2 shadow-[0px_3px_10px_#00000017] dark:border-transparent dark:bg-darkmode-600 w-40">
-                                                        <a class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:hover:bg-darkmode-400 dropdown-item"
-                                                           title="Télecharger" href="{{ fichier.fichier.url }}">
-                                                            <i data-lucide="download"
-                                                               class="stroke-[1] mr-2 h-4 w-4"></i>
-                                                            Télecharger
+
+                                                <!-- Taille du fichier -->
+                                                <div class="mt-1 text-center text-xs text-slate-500">
+                                                    {{ fichier.fichier.size|filesizeformat }}
+                                                </div>
+                                                <div class="mt-1 text-center text-xs text-slate-500">
+                                                    uploadé par <em>{{ fichier.ajoute_par.user }}</em>
+                                                </div>
+
+                                                <!-- Menu dropdown -->
+                                                <div class="dropdown absolute right-0 top-0 ml-auto mr-2 mt-3">
+                                                    <a data-tw-toggle="dropdown" aria-expanded="false"
+                                                       href="javascript:;"
+                                                       class="cursor-pointer block h-5 w-5" aria-label="Plus d'options">
+                                                        <i data-lucide="more-vertical"
+                                                           class="stroke-[1] w-5 h-5 fill-slate-400/70 stroke-slate-400/70"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu absolute z-[9999] hidden"
+                                                         data-transition="" data-selector=".show"
+                                                         data-enter="transition-all ease-linear duration-150"
+                                                         data-enter-from="absolute !mt-5 invisible opacity-0 translate-y-1"
+                                                         data-enter-to="!mt-1 visible opacity-100 translate-y-0"
+                                                         data-leave="transition-all ease-linear duration-150"
+                                                         data-leave-from="!mt-1 visible opacity-100 translate-y-0"
+                                                         data-leave-to="absolute !mt-5 invisible opacity-0 translate-y-1">
+                                                        <div class="dropdown-content rounded-md border-transparent bg-white p-2 shadow-[0px_3px_10px_#00000017] dark:border-transparent dark:bg-darkmode-600 w-40">
                                                             <a class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:hover:bg-darkmode-400 dropdown-item"
-                                                               title="Supprimer ce fichier">
-                                                                <i data-lucide="trash"
+                                                               title="Télecharger" href="{{ fichier.fichier.url }}">
+                                                                <i data-lucide="download"
                                                                    class="stroke-[1] mr-2 h-4 w-4"></i>
-                                                                Supprimer
-                                                            </a>
+                                                                Télecharger
+                                                                <a class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:hover:bg-darkmode-400 dropdown-item"
+                                                                   title="Supprimer ce fichier">
+                                                                    <i data-lucide="trash"
+                                                                       class="stroke-[1] mr-2 h-4 w-4"></i>
+                                                                    Supprimer
+                                                                </a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        {% endfor %}
                                     </div>
-                                    {% endfor %}
                                 </div>
+                                {% endfor %}
                             </div>
-                            {% endfor %}
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
             </div>
         </div>
     </div>

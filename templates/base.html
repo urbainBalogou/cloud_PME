@@ -4,10 +4,11 @@
     <meta charset="utf-8">
     <meta name="csrf-token" content="UTDQHUMnQs9GC9VYhC9EaF5Db5U3oNpH3LpUisuu">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <meta name="description" content="Tailwise admin is super flexible, powerful, clean & modern responsive tailwind admin template with unlimited possibilities.">
     <meta name="keywords" content="admin template, Tailwise Admin Template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="LEFT4CODE">
-    <title>Tailwise - Admin Dashboard Template</title>
+    <title>Personnal Cloud</title>
     <!-- BEGIN: CSS Assets-->
     <link rel="stylesheet" href="{% static 'dist/css/vendors/tippy.css' %}">
     <link rel="stylesheet" href="{% static 'dist/css/vendors/tom-select.css' %}">
@@ -15,6 +16,10 @@
     <link rel="stylesheet" href="{% static 'dist/css/themes/viper.css' %}">
     <link rel="stylesheet" href="{% static 'dist/css/app.css' %}"> <!-- END: CSS Assets-->
 </head>
+
+<script>
+    lucide.createIcons();
+</script>
 <!-- END: Head -->
 <body>
     <div>
@@ -630,8 +635,8 @@
                                             </div>
                                             <a href="viper-settings.html" class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"><i data-tw-merge="" data-lucide="users" class="stroke-[1] w-4 h-4 mr-2"></i>
                                                 Profile Info</a>
-                                            <a href="viper-login.html" class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"><i data-tw-merge="" data-lucide="power" class="stroke-[1] w-4 h-4 mr-2"></i>
-                                                Logout</a>
+                                            <a href="{% url 'logout' %}" class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"><i data-tw-merge="" data-lucide="power" class="stroke-[1] w-4 h-4 mr-2"></i>
+                                                Déconnexion</a>
                                         </div>
                                     </div>
                                 </div>

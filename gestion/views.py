@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, get_user_model
+from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.utils.timezone import now
@@ -97,3 +97,8 @@ def download_files(request):
         return response
 
     return HttpResponse("Méthode non autorisée", status=405)
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('connexion')
