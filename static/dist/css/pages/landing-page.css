@@ -1,0 +1,1 @@
+.landing-page__showcase{transition-property:transform,margin;transition-timing-function:cubic-bezier(0,0,.2,1);transition-duration:.7s;margin-top:1.25rem;margin-bottom:5rem;transform:perspective(1rem) rotateX(.4deg) scale(.9)}.landing-page--scrolled .landing-page__showcase{margin-top:9rem;margin-bottom:0;transform:none}

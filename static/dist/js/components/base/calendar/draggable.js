@@ -1,0 +1,1 @@
+(()=>{(function(){"use strict";$(".full-calendar-draggable").each(function(){new Draggable(this,{itemSelector:".event",eventData:function(t){return{title:$(t).find(".event__title").html(),duration:{days:parseInt($(t).find(".event__days").text())}}}})})})();})();

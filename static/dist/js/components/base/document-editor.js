@@ -1,0 +1,1 @@
+(()=>{(function(){"use strict";$(".editor").each(function(){let t=this;DocumentEditor.create($(t).find(".document-editor__editable")[0]).then(e=>{$(t).closest(".editor").find(".document-editor__toolbar").append(e.ui.view.toolbar.element)}).catch(e=>{console.error(e)})})})();})();

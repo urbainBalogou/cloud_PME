@@ -1,0 +1,1 @@
+(()=>{(function(){"use strict";$(".preview-component").each(function(){let e=this;$(this).find('input[type="checkbox"]').first().on("click",function(){$(this).is(":checked")?($(e).find(".preview").addClass("hide"),$(e).find(".source").removeClass("hide")):($(e).find(".preview").removeClass("hide"),$(e).find(".source").addClass("hide"))})})})();})();
