@@ -8,6 +8,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -26,6 +27,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+JAZZMIN_SETTINGS = {
+    "site_title": "Cloud PME Admin",
+    "site_header": "Cloud PME",
+    "site_brand": "Cloud PME",
+    "welcome_sign": "Bienvenue dans l'administration",
+    "custom_css": "css/admin_custom.css",
+}
 
 ROOT_URLCONF = 'cloud_pme.urls'
 

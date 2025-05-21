@@ -1,0 +1,9 @@
+{% extends "admin/change_form.html" %}
+{% block submit_buttons_bottom %}
+    {{ block.super }}
+    {% if additional_buttons %}
+        <div class="submit-row">
+            {{ additional_buttons|safe }}
+        </div>
+    {% endif %}
+{% endblock %}

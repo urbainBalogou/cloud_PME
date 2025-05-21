@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load fichier_extras %}
+
 {% block content %}
+<!-- Système de messages -->
 {% if messages %}
 <div id="message-container" style="position: fixed; top: 20px; right: 20px; z-index: 9999;">
     {% for message in messages %}
@@ -12,64 +14,56 @@
 </div>
 {% endif %}
 
+<!-- Styles pour les messages d'alerte -->
 <style>
     .alert {
-      padding: 15px 20px;
-      border-radius: 8px;
-      color: white;
-      margin-bottom: 10px;
-      font-family: sans-serif;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-      animation: fadeIn 0.5s ease-out;
+        padding: 15px 20px;
+        border-radius: 8px;
+        color: white;
+        margin-bottom: 10px;
+        font-family: sans-serif;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 0.5s ease-out;
     }
 
-    .success {
-      background-color: #4CAF50;
-    }
-
-    .error {
-      background-color: #f44336;
-    }
-
-    .info {
-      background-color: #2196F3;
-    }
-
-    .warning {
-      background-color: #ff9800;
-    }
+    .success { background-color: #4CAF50; }
+    .error { background-color: #f44336; }
+    .info { background-color: #2196F3; }
+    .warning { background-color: #ff9800; }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes fadeOut {
-      to { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 0; transform: translateY(-20px); }
     }
 </style>
 
+<!-- Script pour la disparition des messages après 3 secondes -->
 <script>
-    // Animation de disparition après 3 secondes
     setTimeout(function() {
-      const container = document.getElementById('message-container');
-      if (container) {
-        container.style.animation = 'fadeOut 1s forwards';
-        setTimeout(() => container.remove(), 1000); // Supprime du DOM après animation
-      }
+        const container = document.getElementById('message-container');
+        if (container) {
+            container.style.animation = 'fadeOut 1s forwards';
+            setTimeout(() => container.remove(), 1000); // Supprime du DOM après animation
+        }
     }, 3000);
 </script>
 
+<!-- Contenu principal -->
 <div class="content transition-[margin,width] duration-100 px-5 mt-[65px] pt-[31px] pb-16 relative z-10 content--compact xl:ml-[275px] [&.content--compact]:xl:ml-[91px]">
     <div class="container">
         <div class="grid grid-cols-12 gap-x-6 gap-y-10">
             <div class="col-span-12">
+                <!-- Titre et bouton d'upload -->
                 <div class="mt-4 flex flex-col gap-y-3 md:mt-0 md:h-10 md:flex-row md:items-center">
                     <div class="text-base font-medium group-[.mode--light]:text-white">
                         Gestionnaire de Fichiers
                     </div>
                     <div class="flex flex-col gap-x-3 gap-y-2 sm:flex-row md:ml-auto">
-                        <!-- Input caché -->
+                        <!-- Formulaire d'upload de fichiers -->
                         <form method="POST" action="{% url 'upload_file' %}" enctype="multipart/form-data">
                             {% csrf_token %}
                             <input id="fichier" name="fichier" accept=".pdf, .xls, .xlsx, .txt, .doc, .docx" type="file"
@@ -82,21 +76,21 @@
                                 Charger de nouveaux fichiers
                             </label>
                         </form>
+                        <!-- Script pour soumettre le formulaire automatiquement après sélection du fichier -->
                         <script>
-                            document.getElementById('fichier').addEventListener('change', function () {
-                              this.form.submit();
+                            document.getElementById('fichier').addEventListener('change', function() {
+                                this.form.submit();
                             });
                         </script>
-                        <!--button data-tw-merge="" class="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary group-[.mode--light]:!border-transparent group-[.mode--light]:!bg-white/[0.12] group-[.mode--light]:!text-slate-200"><i data-tw-merge="" data-lucide="cog" class="mr-2 h-4 w-4 stroke-[1.3]"></i>
-                            File
-                            Manager Settings</button-->
                     </div>
                 </div>
+
+                <!-- Formulaire de recherche et téléchargement -->
                 <form action="{% url 'download_files' %}" method="post">
                     <div class="mt-3.5 flex flex-col gap-5 sm:flex-row">
-                        <div class="relative">
-                        </div>
+                        <div class="relative"></div>
                         <div class="box box--stacked flex w-full flex-col">
+                            <!-- Barre de recherche et bouton d'export -->
                             <div class="mb-1 flex flex-col gap-y-2 p-5 sm:flex-row sm:items-center">
                                 <div>
                                     <div class="relative">
@@ -108,7 +102,6 @@
                                 </div>
 
                                 <div class="flex flex-col gap-x-3 gap-y-2 sm:ml-auto sm:flex-row">
-
                                     {% csrf_token %}
                                     <div data-tw-merge="" data-tw-placement="bottom-end" class="dropdown relative">
                                         <button data-tw-merge="" data-tw-toggle="dropdown" aria-expanded="false"
@@ -117,7 +110,8 @@
                                                class="mr-2 h-4 w-4 stroke-[1.3]"></i>
                                             Exporter
                                             <i data-tw-merge="" data-lucide="chevron-down"
-                                               class="ml-2 h-4 w-4 stroke-[1.3]"></i></button>
+                                               class="ml-2 h-4 w-4 stroke-[1.3]"></i>
+                                        </button>
                                         <div data-transition="" data-selector=".show"
                                              data-enter="transition-all ease-linear duration-150"
                                              data-enter-from="absolute !mt-5 invisible opacity-0 translate-y-1"
@@ -126,121 +120,131 @@
                                              data-leave-from="!mt-1 visible opacity-100 translate-y-0"
                                              data-leave-to="absolute !mt-5 invisible opacity-0 translate-y-1"
                                              class="dropdown-menu absolute z-[9999] hidden">
-
                                         </div>
                                     </div>
-
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <h3 class="text-lg font-semibold">Choisissez un département :</h3>
+                                <div class="flex flex-wrap gap-2 mt-2">
+                                    {% for dep in fichiers_groupes.keys %}
+                                    <button class="btn-departement px-4 py-2 bg-slate-200 rounded hover:bg-slate-300"
+                                            data-departement="{{ dep }}">{{ dep }}
+                                    </button>
+                                    {% endfor %}
                                 </div>
                             </div>
 
+                            <!-- Contenu des départements -->
+                            <div id="conteneurs-departements">
+                                {% for dep, fichiers_par_date in fichiers_groupes.items %}
+                               <div class="conteneur-departement mt-6" data-departement="{{ dep }}" {% if not forloop.first %}style="display:none"{% endif %}>
 
-                            <div>
-                                {% for date, fichiers in fichiers_groupes.items %}
-                                <!-- Section par date -->
-                                <div class="mb-10">
-                                    <!-- Titre avec la date -->
-                                    <div class="relative mb-5 mt-1 h-4 text-xs uppercase text-slate-500/60 before:absolute before:inset-y-0 before:my-auto before:h-px before:w-full before:bg-slate-200/70 before:content-['']">
-                                <span class="absolute ml-4 flex items-center bg-white px-2.5">
-                                <i data-lucide="pin"
-                                   class="mr-1.5 h-[15px] w-[15px] stroke-slate-400/70 stroke-[1.7]"></i>
-                                    {{ date }}
-                                </span>
-                                    </div>
+                                    <h4 class="text-md font-bold text-slate-700 mb-3">Département : {{ dep }}</h4>
 
-                                    <!-- Fichiers du jour -->
-                                    <div class="grid grid-cols-12 gap-3 sm:gap-3.5">
-                                        {% for fichier in fichiers %}
-                                        <div class="col-span-6 sm:col-span-4 md:col-span-3 xl:col-span-2">
-                                            <div class="relative cursor-pointer rounded-[0.6rem] border border-slate-200/80 px-3 pb-5 pt-8 shadow-sm transition hover:bg-slate-50 sm:px-5">
+                                    {% for date, fichiers in fichiers_par_date.items %}
+                                    <!-- Section par date -->
+                                    <div class="mb-10">
+                                        <!-- Titre avec la date -->
+                                        <div class="relative mb-5 mt-1 h-4 text-xs uppercase text-slate-500/60 before:absolute before:inset-y-0 before:my-auto before:h-px before:w-full before:bg-slate-200/70 before:content-['']">
+                                            <span class="absolute ml-4 flex items-center bg-white px-2.5">
+                                                <i data-lucide="pin"
+                                                   class="mr-1.5 h-[15px] w-[15px] stroke-slate-400/70 stroke-[1.7]"></i>
+                                                {{ date }}
+                                            </span>
+                                        </div>
 
-                                                <!-- Case à cocher -->
-                                                <div class="absolute left-0 top-0 ml-3 mt-3">
-                                                    <input type="checkbox" name="fichiers_selectionnes"
-                                                           value="{{ fichier.id }}"
-                                                           {% if fichier.selectionne %}checked{% endif %}
-                                                           class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-slate-700 dark:focus:ring-opacity-50 border">
-                                                </div>
+                                        <!-- Fichiers du jour -->
+                                        <div class="grid grid-cols-12 gap-3 sm:gap-3.5">
+                                            {% for fichier in fichiers %}
+                                            <div class="col-span-6 sm:col-span-4 md:col-span-3 xl:col-span-2">
+                                                <div class="relative cursor-pointer rounded-[0.6rem] border border-slate-200/80 px-3 pb-5 pt-8 shadow-sm transition hover:bg-slate-50 sm:px-5">
+                                                    <!-- Case à cocher -->
+                                                    <div class="absolute left-0 top-0 ml-3 mt-3">
+                                                        <input type="checkbox" name="fichiers_selectionnes"
+                                                               value="{{ fichier.id }}" {% if fichier.selectionne %}checked{% endif %}
+                                                               class="transition-all duration-100 ease-in-out shadow-sm border-slate-200 cursor-pointer rounded focus:ring-4 focus:ring-offset-0 focus:ring-primary focus:ring-opacity-20 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-slate-700 dark:focus:ring-opacity-50 border">
+                                                    </div>
 
-                                                <!-- Icône PDF -->
-                                                <div class="flex items-center space-x-2">
-                                                    {% with fichier.nom_fichier|extension as ext %}
-                                                    {% if ext == ".pdf" %}
-                                                    <i data-lucide="file-text" class="text-red-600 w-5 h-5"></i> PDF
-                                                    {% elif ext == ".doc" or ext == ".docx" %}
-                                                    <i data-lucide="file-text" class="text-blue-600 w-5 h-5"></i> Word
-                                                    {% elif ext == ".xls" or ext == ".xlsx" %}
-                                                    <i data-lucide="file-spreadsheet"
-                                                       class="text-green-600 w-5 h-5"></i> Excel
-                                                    {% elif ext == ".txt" %}
-                                                    <i data-lucide="file" class="text-gray-600 w-5 h-5"></i> Texte
-                                                    {% else %}
-                                                    <i data-lucide="file" class="text-slate-400 w-5 h-5"></i> Fichier
-                                                    {% endif %}
-                                                    {% endwith %}
-                                                    <!--span class="text-sm">{{ fichier.nom_fichier }}</span-->
-                                                </div>
+                                                    <!-- Icône du type de fichier -->
+                                                    <div class="flex items-center space-x-2">
+                                                        {% with fichier.nom_fichier|extension as ext %}
+                                                        {% if ext == ".pdf" %}
+                                                        <i data-lucide="file-text" class="text-red-600 w-5 h-5"></i> PDF
+                                                        {% elif ext == ".doc" or ext == ".docx" %}
+                                                        <i data-lucide="file-text" class="text-blue-600 w-5 h-5"></i>
+                                                        Word
+                                                        {% elif ext == ".xls" or ext == ".xlsx" %}
+                                                        <i data-lucide="file-spreadsheet"
+                                                           class="text-green-600 w-5 h-5"></i> Excel
+                                                        {% elif ext == ".txt" %}
+                                                        <i data-lucide="file" class="text-gray-600 w-5 h-5"></i> Texte
+                                                        {% else %}
+                                                        <i data-lucide="file" class="text-slate-400 w-5 h-5"></i>
+                                                        Fichier
+                                                        {% endif %}
+                                                        {% endwith %}
+                                                    </div>
 
-
-                                                <!-- Nom du fichier -->
-                                                <a class="mt-4 block truncate text-center font-medium capitalize"
-                                                   href="{{ fichier.fichier.url }}"
-                                                   title="Voir ou télécharger le fichier">
-                                                    {{ fichier.nom_fichier }}
-                                                </a>
-
-                                                <!-- Taille du fichier -->
-                                                <div class="mt-1 text-center text-xs text-slate-500">
-                                                    {{ fichier.fichier.size|filesizeformat }}
-                                                </div>
-                                                <div class="mt-1 text-center text-xs text-slate-500">
-                                                    uploadé par <em>{{ fichier.ajoute_par.user }}</em>
-                                                </div>
-
-                                                <!-- Menu dropdown -->
-                                                <div class="dropdown absolute right-0 top-0 ml-auto mr-2 mt-3">
-                                                    <a data-tw-toggle="dropdown" aria-expanded="false"
-                                                       href="javascript:;"
-                                                       class="cursor-pointer block h-5 w-5" aria-label="Plus d'options">
-                                                        <i data-lucide="more-vertical"
-                                                           class="stroke-[1] w-5 h-5 fill-slate-400/70 stroke-slate-400/70"></i>
+                                                    <!-- Nom du fichier -->
+                                                    <a class="mt-4 block truncate text-center font-medium capitalize"
+                                                       href="{{ fichier.fichier.url }}"
+                                                       title="Voir ou télécharger le fichier">
+                                                        {{ fichier.nom_fichier }}
                                                     </a>
-                                                    <div class="dropdown-menu absolute z-[9999] hidden"
-                                                         data-transition="" data-selector=".show"
-                                                         data-enter="transition-all ease-linear duration-150"
-                                                         data-enter-from="absolute !mt-5 invisible opacity-0 translate-y-1"
-                                                         data-enter-to="!mt-1 visible opacity-100 translate-y-0"
-                                                         data-leave="transition-all ease-linear duration-150"
-                                                         data-leave-from="!mt-1 visible opacity-100 translate-y-0"
-                                                         data-leave-to="absolute !mt-5 invisible opacity-0 translate-y-1">
 
+                                                    <!-- Infos sur le fichier -->
+                                                    <div class="mt-1 text-center text-xs text-slate-500">
+                                                        {{ fichier.fichier.size|filesizeformat }}
+                                                    </div>
+                                                    <div class="mt-1 text-center text-xs text-slate-500">
+                                                        uploadé par <em>{{ fichier.ajoute_par.user }}</em>
+                                                    </div>
 
-
+                                                    <!-- Menu dropdown pour actions sur le fichier -->
+                                                    <div class="dropdown absolute right-0 top-0 ml-auto mr-2 mt-3">
+                                                        <a data-tw-toggle="dropdown" aria-expanded="false"
+                                                           href="javascript:;" class="cursor-pointer block h-5 w-5"
+                                                           aria-label="Plus d'options">
+                                                            <i data-lucide="more-vertical"
+                                                               class="stroke-[1] w-5 h-5 fill-slate-400/70 stroke-slate-400/70"></i>
+                                                        </a>
+                                                        <div class="dropdown-menu absolute z-[9999] hidden"
+                                                             data-transition="" data-selector=".show"
+                                                             data-enter="transition-all ease-linear duration-150"
+                                                             data-enter-from="absolute !mt-5 invisible opacity-0 translate-y-1"
+                                                             data-enter-to="!mt-1 visible opacity-100 translate-y-0"
+                                                             data-leave="transition-all ease-linear duration-150"
+                                                             data-leave-from="!mt-1 visible opacity-100 translate-y-0"
+                                                             data-leave-to="absolute !mt-5 invisible opacity-0 translate-y-1">
                                                             <div class="dropdown-content rounded-md border-transparent bg-white p-2 shadow-[0px_3px_10px_#00000017] dark:border-transparent dark:bg-darkmode-600 w-40">
                                                                 <a class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:hover:bg-darkmode-400 dropdown-item"
                                                                    title="Télecharger" href="{{ fichier.fichier.url }}">
                                                                     <i data-lucide="download"
                                                                        class="stroke-[1] mr-2 h-4 w-4"></i>
                                                                     Télecharger
-
                                                                 </a>
-                                                                <form method="post" action="{% url 'delete_file' fichier.id %}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce fichier ?');">
-                                                                     {% csrf_token %}
-                                                                    <button type="submit" class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:hover:bg-darkmode-400 dropdown-item"
-                                                                           title="Supprimer ce fichier">
-                                                                            <i data-lucide="trash"
-                                                                               class="stroke-[1] mr-2 h-4 w-4"></i>
-                                                                            Supprimer
+                                                                <form method="post"
+                                                                      action="{% url 'delete_file' fichier.id %}"
+                                                                      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce fichier ?');">
+                                                                    {% csrf_token %}
+                                                                    <button type="submit"
+                                                                            class="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:hover:bg-darkmode-400 dropdown-item"
+                                                                            title="Supprimer ce fichier">
+                                                                        <i data-lucide="trash"
+                                                                           class="stroke-[1] mr-2 h-4 w-4"></i>
+                                                                        Supprimer
                                                                     </button>
                                                                 </form>
-
                                                             </div>
-
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            {% endfor %}
                                         </div>
-                                        {% endfor %}
                                     </div>
+                                    {% endfor %}
                                 </div>
                                 {% endfor %}
                             </div>
@@ -250,4 +254,30 @@
             </div>
         </div>
     </div>
-    {% endblock %}
+
+    <!-- Script pour gérer l'affichage des départements -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    const boutons = document.querySelectorAll(".btn-departement");
+    const conteneurs = document.querySelectorAll(".conteneur-departement");
+
+    boutons.forEach(bouton => {
+        bouton.addEventListener("click", function(event) {
+            event.preventDefault();  // Empêche le comportement par défaut
+
+            const depSelectionne = bouton.getAttribute("data-departement");
+
+            conteneurs.forEach(c => {
+                if (c.getAttribute("data-departement") === depSelectionne) {
+                    c.style.display = "block";
+                } else {
+                    c.style.display = "none";
+                }
+            });
+        });
+    });
+});
+
+    </script>
+</div>
+{% endblock %}

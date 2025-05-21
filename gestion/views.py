@@ -13,31 +13,35 @@ from django.utils import timezone
 
 user = get_user_model()
 
+from collections import defaultdict
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.shortcuts import render
+from .models import Employe, FichierDepartement
+
 @login_required
 def index(request):
     try:
         employe = Employe.objects.get(user=request.user)
-        fichiers_raw = FichierDepartement.objects.filter(
-            departement=employe.departement
-        ).order_by('-date_ajout')
+        departements = employe.departements.all()
 
-        print("fichier raw:",fichiers_raw)
+        fichiers_groupes = {}
 
-        # Regroupement des fichiers par date
-        fichiers_groupes = defaultdict(list)
-        for fichier in fichiers_raw:
-            date_cle = fichier.date_ajout.date()
-            fichiers_groupes[date_cle].append(fichier)
-
-        print("ficiers par date: ",fichiers_groupes)
+        for dep in departements:
+            fichiers = FichierDepartement.objects.filter(departement=dep).order_by('-date_ajout')
+            fichiers_par_date = defaultdict(list)
+            for fichier in fichiers:
+                fichiers_par_date[fichier.date_ajout.date()].append(fichier)
+            fichiers_groupes[dep.nom] = dict(fichiers_par_date)
 
     except Employe.DoesNotExist:
         messages.error(request, "Aucun employé associé à cet utilisateur.")
         fichiers_groupes = {}
 
     return render(request, "gestion/file_manager.html", {
-        "fichiers_groupes": dict(fichiers_groupes)
+        "fichiers_groupes": fichiers_groupes
     })
+
 
 def connexion(request):
     if request.method == 'POST':
@@ -110,3 +114,32 @@ def delete_file(request, id):
         messages.success(request, "Fichier supprimé avec succès.")
         return redirect("index")
     return HttpResponseNotAllowed(["POST"])
+
+
+@login_required
+def faire_demande(request):
+    if request.method == "POST":
+        objet = request.POST.get('objet')
+        message = request.POST.get('message')
+
+        if objet is not None and message is not None:
+            demande = Demande(
+                employe = request.user,
+                objet = objet,
+                message = message
+            )
+
+            demande.save()
+
+            return redirect('demande')
+
+    return render(request, "gestion/faire_demande.html")
+
+
+@login_required
+def liste_demande(request):
+    if request.user.is_staff:
+        demandes = Demande.objects.all().order_by('date_reponse')
+    else:
+        demandes = Demande.objects.filter(utilisateur=request.user).order_by('date_reponse')
+    return render(request, 'gestion/liste_demandes.html', {'demandes': demandes})
